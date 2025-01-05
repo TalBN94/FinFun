@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApplication1.Controllers;
+namespace FinFunApp.Controllers;
 
 [ApiController]
 [Route("[controller]")]

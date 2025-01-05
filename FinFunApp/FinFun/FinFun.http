@@ -1,12 +1,12 @@
-@WebApplication1_HostAddress = http://localhost:5138
+@FinFunApp_HostAddress = http://localhost:5138
 
-GET {{WebApplication1_HostAddress}}/weatherforecast/
+GET {{FinFunApp_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
 
 
-GET {{WebApplication1_HostAddress}}/transaction/names
+GET {{FinFunApp_HostAddress}}/transaction/names
 Accept: application/json
 
 ###

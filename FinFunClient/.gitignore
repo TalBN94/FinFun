@@ -54,11 +54,7 @@ test-results.xml
 
 # Vite output
 .vite/
-eslint.config.js
-index.html
-package.json
-vite.config.js
-README.md
+
 
 # Lint/IDE settings
 .eslintcache

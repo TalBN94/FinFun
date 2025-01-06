@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router";
-
+import { Box, Container} from '@mui/material';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import PersonIcon from '@mui/icons-material/Person';
+import PieChartIcon from '@mui/icons-material/PieChart';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 const HomePage = () => {
-  const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [value, setValue] = useState(0)
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,27 +39,35 @@ const HomePage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Fetched Data</h1>
-      {error ? (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          Error: {error}
-        </div>
-      ) : (
-        <ul className="space-y-2">
-          {data.map((item, index) => (
-            <li 
-              key={index}
-              className="p-3 bg-white shadow rounded hover:bg-gray-50 transition-colors"
-            >
-              {item}
-            </li>
-          ))}
-        </ul>
-      )}
-              <NavLink to="/expense">Click here to Get to Expense!</NavLink>
+    <Container sx={{
+      height: "100vh",
+      width: "100vw",
 
-    </div>
+    }}>
+        <Box sx={{ 
+          maxWidth: "100vw",
+          width: 500, 
+          height:200, 
+          position: "sticky", 
+          bottom: 0,
+          display: "flex",
+                    
+          
+          }}>
+      <BottomNavigation
+        showLabels
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+      >
+        <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
+        <BottomNavigationAction label="Goals" icon={<PieChartIcon />} />
+        <BottomNavigationAction label="Transactions" icon={<CompareArrowsIcon />} />
+      </BottomNavigation>
+    </Box>
+
+    </Container>
   );
 };
 

@@ -1,10 +1,15 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import './styles/App.css';
+import { ThemeProvider} from '@mui/material/styles';
+
+
 
 const App = () => {
   return (
     <>
-     
+      <ThemeProvider theme={theme}>
+      
+    </ThemeProvider>
     </>
   );
 };

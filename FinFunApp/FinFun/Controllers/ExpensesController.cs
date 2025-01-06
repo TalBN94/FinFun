@@ -39,9 +39,16 @@ public class ExpensesController : ControllerBase
     [ProducesResponseType<Expense>(StatusCodes.Status201Created)]
     public IActionResult Create([FromBody] Expense expense)
     {
-        var created = _service.Create(expense);
-        var location = Url.Action(nameof(Create).ToLower(),  $"/{expense.id}");
+        _service.Create(expense);
 
         return CreatedAtAction("GetById", new { id = expense.id }, expense);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public IActionResult Delete(string id)
+    {
+        _service.Delete(id);
+        return NoContent();
     }
 }

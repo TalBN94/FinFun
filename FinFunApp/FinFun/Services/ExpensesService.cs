@@ -22,10 +22,14 @@ public class ExpensesService
         return expense;
     }
 
-    public Expense Create(Expense expense)
+    public void Create(Expense expense)
     {
         expense.id = Guid.NewGuid().ToString();
         InMemDB.Instance.Save(expense);
-        return expense;
+    }
+
+    public void Delete(string id)
+    {
+        InMemDB.Instance.Delete(id);
     }
 }

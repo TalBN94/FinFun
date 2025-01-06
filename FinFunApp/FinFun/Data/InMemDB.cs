@@ -35,5 +35,10 @@ public sealed class InMemDB
         _expenses[expense.id] = expense;
     }
 
+    public void Delete(string id)
+    {
+        _expenses.Remove(id);
+    }
+
     public static InMemDB Instance { get; } = new InMemDB();
 }

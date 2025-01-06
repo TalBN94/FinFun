@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router";
 
 const HomePage = () => {
   const [data, setData] = useState([]);
@@ -52,6 +53,8 @@ const HomePage = () => {
           ))}
         </ul>
       )}
+              <NavLink to="/expense">Click here to Get to Expense!</NavLink>
+
     </div>
   );
 };

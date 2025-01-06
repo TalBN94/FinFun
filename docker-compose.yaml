@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  finfunapp:
+    build:
+      context: ./FinFunApp
+      dockerfile: Dockerfile.FinFunApp
+    image: finfunapp:local
+    ports:
+      - "8080:5000"
+    depends_on:
+      - finfunclient
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  finfunclient:
+    build:
+      context: ./FinFunClient
+      dockerfile: Dockerfile.FinFunClient
+    image: finfunclient:local
+    ports:
+      - "3000:80"

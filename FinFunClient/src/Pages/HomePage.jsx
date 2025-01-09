@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Container} from '@mui/material';
+import { NavLink } from "react-router"
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import PersonIcon from '@mui/icons-material/Person';
@@ -14,7 +15,7 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("http://127.0.0.1:5000/Transaction/names");
+        const response = await fetch("http://localhost:5000/expenses");
         if (!response.ok) {
           throw new Error(`Network response was not ok: ${response.statusText}`);
         }
@@ -66,7 +67,7 @@ const HomePage = () => {
         <BottomNavigationAction label="Transactions" icon={<CompareArrowsIcon />} />
       </BottomNavigation>
     </Box>
-
+        <NavLink to="/expense">Link to Expense Pages</NavLink>
     </Container>
   );
 };

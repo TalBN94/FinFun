@@ -15,7 +15,7 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("http://localhost:5000/expenses");
+        const response = await fetch("http://127.0.0.1:5001/expenses");
         if (!response.ok) {
           throw new Error(`Network response was not ok: ${response.statusText}`);
         }

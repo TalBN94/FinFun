@@ -43,7 +43,7 @@ import {
     const handleSubmit = (event) => {
       event.preventDefault();
       console.log('Form submitted:', formData);
-      fetch("http://localhost:5000/expenses", {
+      fetch("http://127.0.0.1:5001/expenses", {
         method: "POST",
         body: JSON.stringify({
           id: "1", 

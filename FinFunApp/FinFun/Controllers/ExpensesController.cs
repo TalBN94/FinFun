@@ -23,6 +23,7 @@ public class ExpensesController : ControllerBase
     [ProducesResponseType<List<Expense>>(StatusCodes.Status200OK)]
     public IActionResult GetAll()
     {
+        _logger.LogInformation("Get all expenses");
         return Ok(_service.GetAll());
     }
 

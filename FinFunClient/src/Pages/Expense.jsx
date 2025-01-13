@@ -16,7 +16,7 @@ import {
     const [formData, setFormData] = useState({
       category: '',
       description: '',
-      amount: '',
+      amount: 0,
       date: today
     });
   
@@ -43,7 +43,35 @@ import {
     const handleSubmit = (event) => {
       event.preventDefault();
       console.log('Form submitted:', formData);
-      //Add Logic for POST Reuqest in the future
+      fetch("http://127.0.0.1:5001/expenses", {
+        method: "POST",
+        body: JSON.stringify({
+          id: "1", 
+          amount: parseInt(formData.amount), 
+          description: formData.description || "", 
+          category: formData.category,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      }).then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        setFormData({
+          category: '',
+          description: '',
+          amount: 0,
+          date: today
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
     };
   
     return (

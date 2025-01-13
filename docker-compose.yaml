@@ -6,17 +6,28 @@ services:
       context: ./FinFunApp
       dockerfile: Dockerfile.FinFunApp
     image: finfunapp:local
+    container_name: finfunapp
+    networks:
+      - internal-network
     ports:
-      - "8080:5000"
-    depends_on:
-      - finfunclient
+      - "5001:5000"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://+:5000"
 
   finfunclient:
     build:
       context: ./FinFunClient
       dockerfile: Dockerfile.FinFunClient
     image: finfunclient:local
+    container_name: finfunclient
+    networks:
+      - internal-network
+    depends_on:
+      - finfunapp
     ports:
       - "3000:80"
+
+networks:
+  internal-network:
+    driver: bridge

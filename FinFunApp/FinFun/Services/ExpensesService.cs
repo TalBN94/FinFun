@@ -13,23 +13,23 @@ public class ExpensesService
 
     public List<Expense> GetAll()
     {
-        return InMemDB.Instance.GetAll();
+        return InMemDb.Instance.GetAll();
     }
 
     public Expense Get(string id)
     {
-        var expense = InMemDB.Instance.Get(id);
+        var expense = InMemDb.Instance.Get(id);
         return expense;
     }
 
     public void Create(Expense expense)
     {
-        expense.id = Guid.NewGuid().ToString();
-        InMemDB.Instance.Save(expense);
+        expense.Id = Guid.NewGuid().ToString();
+        InMemDb.Instance.Save(expense);
     }
 
     public void Delete(string id)
     {
-        InMemDB.Instance.Delete(id);
+        InMemDb.Instance.Delete(id);
     }
 }

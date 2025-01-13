@@ -2,16 +2,16 @@ using FinFunApp.Model;
 
 namespace FinFunApp.Data;
 
-public sealed class InMemDB
+public sealed class InMemDb
 {
     private readonly Dictionary<string, Expense> _expenses;
 
-    static InMemDB()
+    static InMemDb()
     {
         
     }
 
-    private InMemDB()
+    private InMemDb()
     {
         _expenses = new Dictionary<string, Expense>();
     }
@@ -32,7 +32,9 @@ public sealed class InMemDB
 
     public void Save(Expense expense)
     {
-        _expenses[expense.id] = expense;
+        if (expense.Id == null)
+            throw new ArgumentNullException(nameof(expense));
+        _expenses[expense.Id] = expense;
     }
 
     public void Delete(string id)
@@ -40,5 +42,5 @@ public sealed class InMemDB
         _expenses.Remove(id);
     }
 
-    public static InMemDB Instance { get; } = new InMemDB();
+    public static InMemDb Instance { get; } = new InMemDb();
 }

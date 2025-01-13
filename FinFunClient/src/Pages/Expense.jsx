@@ -50,6 +50,7 @@ import {
           amount: parseInt(formData.amount), 
           description: formData.description || "", 
           category: formData.category,
+          date: formData.date
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8"

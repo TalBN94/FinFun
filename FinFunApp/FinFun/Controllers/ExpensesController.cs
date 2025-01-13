@@ -42,7 +42,7 @@ public class ExpensesController : ControllerBase
     {
         _service.Create(expense);
 
-        return CreatedAtAction("GetById", new { id = expense.id }, expense);
+        return CreatedAtAction("GetById", new { id = expense.Id }, expense);
     }
 
     [HttpDelete("{id}")]

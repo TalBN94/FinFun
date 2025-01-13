@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using FinFunApp.Model.Validation;
 
 namespace FinFunApp.Model;
 
@@ -17,5 +18,6 @@ public class Expense
     public string? Category { get; set; }
     
     [Required(ErrorMessage = "date is required")]
+    [DateFormatValidator]
     public DateTime? Date { get; set; }
 }

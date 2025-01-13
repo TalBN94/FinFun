@@ -5,11 +5,11 @@ namespace FinFunApp.Model;
 public class Expense
 {
     public string? Id { get; set; }
-    [Required]
+    [Required(ErrorMessage = "amount is required")]
     public int? Amount { get; set; }
     public string? Description { get; set; }
-    [Required]
+    [Required(ErrorMessage = "category is required")]
     public string? Category { get; set; }
-    [Required]
+    [Required(ErrorMessage = "date is required")]
     public DateTime? Date { get; set; }
 }

@@ -1,10 +1,10 @@
+using FinFunApp.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers()
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
-    });
+builder.Services.AddControllers();
+builder.Services.AddTransient<ExpensesService>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>

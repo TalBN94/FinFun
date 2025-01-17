@@ -12,7 +12,7 @@ public class ExpensesService(ILogger<ExpensesService> logger)
         return InMemDb.Instance.GetAll();
     }
 
-    public Expense Get(string id)
+    public Expense Get(Guid id)
     {
         logger.LogInformation("Fetching expense {}", id);
         var expense = InMemDb.Instance.Get(id);
@@ -25,7 +25,7 @@ public class ExpensesService(ILogger<ExpensesService> logger)
         
         var expense = new Expense()
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = Guid.NewGuid(),
             Amount = expenseRequest.Amount,
             Category = expenseRequest.Category,
             Description = expenseRequest.Description ?? string.Empty,
@@ -35,7 +35,7 @@ public class ExpensesService(ILogger<ExpensesService> logger)
         return expense;
     }
 
-    public void Delete(string id)
+    public void Delete(Guid id)
     {
         logger.LogInformation("Deleting expense {}", id);
         InMemDb.Instance.Delete(id);

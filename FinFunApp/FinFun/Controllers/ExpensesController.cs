@@ -28,13 +28,13 @@ public class ExpensesController : ControllerBase
         return Ok(_service.GetAll());
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     [ProducesResponseType<Expense>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetById(string id)
+    public IActionResult GetById(Guid id)
     {
         var expense = _service.Get(id);
-        return expense == null ? NotFound() : Ok(expense);
+        return Ok(expense);
     }
 
     [HttpPost]
@@ -46,9 +46,9 @@ public class ExpensesController : ControllerBase
         return CreatedAtAction("GetById", new { id = expense.Id }, expense);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult Delete(string id)
+    public IActionResult Delete(Guid id)
     {
         _service.Delete(id);
         return NoContent();

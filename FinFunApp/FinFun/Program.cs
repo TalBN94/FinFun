@@ -1,9 +1,17 @@
+using FinFunApp.Errors;
+using FinFunApp.Exceptions;
 using FinFunApp.Services;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddExceptionHandler<AppExceptionHandler>();
 builder.Services.AddTransient<ExpensesService>();
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = ModelValidationErrorResponse.GenerateResponse;
+});
 
 builder.Services.AddCors(options =>
 {
@@ -15,6 +23,7 @@ builder.Services.AddCors(options =>
     });
 });
 var app = builder.Build();
+app.UseExceptionHandler( _ => { });
 app.UseCors("AllowReactApp");
 app.UseRouting();
 app.UseHttpsRedirection();

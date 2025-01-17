@@ -1,10 +1,11 @@
+using FinFunApp.Exceptions;
 using FinFunApp.Model;
 
 namespace FinFunApp.Data;
 
 public sealed class InMemDb
 {
-    private readonly Dictionary<string, Expense> _expenses;
+    private readonly Dictionary<Guid, Expense> _expenses;
 
     static InMemDb()
     {
@@ -13,7 +14,7 @@ public sealed class InMemDb
 
     private InMemDb()
     {
-        _expenses = new Dictionary<string, Expense>();
+        _expenses = new Dictionary<Guid, Expense>();
     }
 
     public List<Expense> GetAll()
@@ -21,13 +22,13 @@ public sealed class InMemDb
         return _expenses.Values.ToList();
     }
 
-    public Expense Get(string id)
+    public Expense Get(Guid id)
     {
-        if (!_expenses.ContainsKey(id))
+        if (!_expenses.TryGetValue(id, out var expense))
         {
-            return null;
+            throw new ExpenseNotFoundException();
         }
-        return _expenses[id];
+        return expense;
     }
 
     public void Save(Expense expense)
@@ -37,7 +38,7 @@ public sealed class InMemDb
         _expenses[expense.Id] = expense;
     }
 
-    public void Delete(string id)
+    public void Delete(Guid id)
     {
         _expenses.Remove(id);
     }

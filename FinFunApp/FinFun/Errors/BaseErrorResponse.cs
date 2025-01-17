@@ -8,5 +8,8 @@ public class BaseErrorResponse
     public int Code { get; set; }
     
     [JsonPropertyOrder(1)]
+    public string Title { get; set; }
+    
+    [JsonPropertyOrder(2)]
     public string Message { get; set; }
 }

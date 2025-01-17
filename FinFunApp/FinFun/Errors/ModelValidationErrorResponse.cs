@@ -8,6 +8,7 @@ public class ModelValidationErrorResponse : BaseErrorDetailsResponse
     {
         var apiError = new ModelValidationErrorResponse();
         apiError.Code = StatusCodes.Status400BadRequest;
+        apiError.Title = "Bad Request";
         apiError.Message = "Validation errors found";
         var errors = actionContext.ModelState.AsEnumerable();
 

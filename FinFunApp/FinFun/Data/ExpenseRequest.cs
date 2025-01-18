@@ -16,4 +16,16 @@ public class ExpenseRequest
     
     [Required(ErrorMessage = "date is required")]
     public DateOnly? Date { get; set; }
+
+    public override string ToString()
+    {
+        return $"""
+                ExpenseRequest(
+                     amount: {Amount},
+                     description: {Description},
+                     category: {Category},
+                     date: {Date}
+                )
+                """;
+    }
 }

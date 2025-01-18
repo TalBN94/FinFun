@@ -3,33 +3,41 @@ using FinFunApp.Model;
 
 namespace FinFunApp.Services;
 
-public class ExpensesService
+public class ExpensesService(ILogger<ExpensesService> logger)
 {
-
-    public ExpensesService()
-    {
-        
-    }
 
     public List<Expense> GetAll()
     {
+        logger.LogInformation("Fetching all expenses");
         return InMemDb.Instance.GetAll();
     }
 
-    public Expense Get(string id)
+    public Expense Get(Guid id)
     {
+        logger.LogInformation("Fetching expense {}", id);
         var expense = InMemDb.Instance.Get(id);
         return expense;
     }
 
-    public void Create(Expense expense)
+    public Expense Create(ExpenseRequest expenseRequest)
     {
-        expense.Id = Guid.NewGuid().ToString();
+        logger.LogInformation("Creating new expense");
+        
+        var expense = new Expense()
+        {
+            Id = Guid.NewGuid(),
+            Amount = expenseRequest.Amount,
+            Category = expenseRequest.Category,
+            Description = expenseRequest.Description ?? string.Empty,
+            Date = expenseRequest.Date,
+        };
         InMemDb.Instance.Save(expense);
+        return expense;
     }
 
-    public void Delete(string id)
+    public void Delete(Guid id)
     {
+        logger.LogInformation("Deleting expense {}", id);
         InMemDb.Instance.Delete(id);
     }
 }

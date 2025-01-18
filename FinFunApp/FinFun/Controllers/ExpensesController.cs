@@ -1,3 +1,4 @@
+using FinFunApp.Data;
 using FinFunApp.Model;
 using FinFunApp.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +13,11 @@ public class ExpensesController : ControllerBase
     private readonly IConfiguration _configuration;
     private readonly ExpensesService _service;
 
-    public ExpensesController(ILogger<ExpensesController> logger, IConfiguration Configuration)
+    public ExpensesController(ILogger<ExpensesController> logger, IConfiguration Configuration, ExpensesService service)
     {
         _logger = logger;
         _configuration = Configuration;
-        _service = new ExpensesService();
+        _service = service;
     }
 
     [HttpGet]
@@ -27,27 +28,27 @@ public class ExpensesController : ControllerBase
         return Ok(_service.GetAll());
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     [ProducesResponseType<Expense>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetById(string id)
+    public IActionResult GetById(Guid id)
     {
         var expense = _service.Get(id);
-        return expense == null ? NotFound() : Ok(expense);
+        return Ok(expense);
     }
 
     [HttpPost]
     [ProducesResponseType<Expense>(StatusCodes.Status201Created)]
-    public IActionResult Create([FromBody] Expense expense)
+    public IActionResult Create([FromBody] ExpenseRequest? expenseDto)
     {
-        _service.Create(expense);
+        var expense = _service.Create(expenseDto);
 
         return CreatedAtAction("GetById", new { id = expense.Id }, expense);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult Delete(string id)
+    public IActionResult Delete(Guid id)
     {
         _service.Delete(id);
         return NoContent();

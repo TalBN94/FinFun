@@ -7,6 +7,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import Header from '../components/header/Header';
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
@@ -17,14 +18,15 @@ const Layout = ({ children }) => {
       '/': 0,
       '/profile': 1,
       '/goals' :2,
-      '/expense': 3
+      '/expense': 3,
+      '/incomes': 4,
     };
-    return pathToIndex[location.pathname] || 1;
+    return pathToIndex[location.pathname] || 0;
   });
 
   const handleNavigation = (event, newValue) => {
     setValue(newValue);
-    const paths = ['/', '/profile','/goals', '/expense'];
+    const paths = ['/', '/profile','/goals', '/expense', '/incomes'];
     navigate(paths[newValue]);
   };
 
@@ -34,6 +36,7 @@ const Layout = ({ children }) => {
       pb: '56px', // Height of BottomNavigation
       position: 'relative'
     }}>
+      <Header/>
       <Box component="main" sx={{ height: '100%' }}>
         {children}
       </Box>
@@ -57,22 +60,27 @@ const Layout = ({ children }) => {
         }}
       >
         <BottomNavigationAction 
-          label="Dashboard" 
+          label="מסך ראשי" 
           icon={<DashboardIcon />} 
         />
         <BottomNavigationAction 
-          label="Profile" 
+          label="פרופיל" 
           icon={<PersonIcon />} 
         />
         <BottomNavigationAction 
-          label="Goals" 
+          label="יעדים" 
           icon={<PieChartIcon />} 
         />
         <BottomNavigationAction 
-          label="Expenses" 
+          label="הוצאות" 
+          icon={<CompareArrowsIcon />} 
+        />
+        <BottomNavigationAction 
+          label="הכנסות" 
           icon={<CompareArrowsIcon />} 
         />
       </BottomNavigation>
+      
     </Box>
   );
 };

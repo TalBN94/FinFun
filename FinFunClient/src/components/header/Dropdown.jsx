@@ -8,12 +8,12 @@ import { useState } from 'react';
 
 const DropdownComponent = () => {
     const months = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
+        'ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני',
+        'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'
       ];
     const getCurrentMonth = () => {
         
-        const currentMonth = new Date().getMonth(); // Returns 0-11
+        const currentMonth = new Date().getMonth(); 
         return months[currentMonth];
       };
     const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());

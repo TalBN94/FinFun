@@ -13,6 +13,7 @@ import {
   Alert
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { Directions, RttOutlined } from "@mui/icons-material";
 
 const form = ({ 
   open, 
@@ -32,14 +33,13 @@ const form = ({
   });
 
   const categories = [
-    'Food & Dining',
-    'Transportation',
-    'Entertainment',
-    'Shopping',
-    'Utilities',
-    'Healthcare',
-    'Education',
-    'Other'
+    'אוכל בחוץ',
+    'תחבורה',
+    'הוצאות מזדמנות',
+    'קניות',
+    'מוצרי חשמל',
+    'הוצאות שוטפות',
+    'לימודים',
   ];
 
   const handleChange = (event) => {
@@ -50,42 +50,26 @@ const form = ({
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setError(null);
+ 
+    // In your Form component, modify the handleSubmit function to just call onSubmitSuccess:
+const handleSubmit = (event) => {
+  event.preventDefault();
+  setError(null);
 
-    fetch(apiPath, {
-      method: "POST",
-      body: JSON.stringify({
-        id: String(Date.now()),  // Generate unique ID
-        amount: parseInt(formData.amount),
-        description: formData.description || "",
-        category: formData.category,
-        date: formData.date
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Success:', data);
-      if (onSubmitSuccess) {
-        onSubmitSuccess(data);
-      }
-      resetForm();
-      handleClose();
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      setError('Failed to submit form. Please try again.');
-    });
-  };
+  // Instead of making the fetch call here, just pass the data to parent
+  onSubmitSuccess({
+    id: String(Date.now()),
+    amount: parseInt(formData.amount),
+    description: formData.description || "",
+    category: formData.category,
+    date: formData.date
+  });
+
+  resetForm();
+  handleClose();
+};
+
+  
 
   const resetForm = () => {
     setFormData({
@@ -123,8 +107,8 @@ const form = ({
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent>
-        <form onSubmit={handleSubmit}>
+      <DialogContent sx={{textAlign: 'right'}}>
+        <form onSubmit={handleSubmit} sx={{direction: 'rtl'}}>
           <Stack spacing={3} sx={{ py: 2 }}>
             {error && (
               <Alert severity="error" sx={{ mb: 2 }}>
@@ -136,9 +120,14 @@ const form = ({
               select
               required
               name="category"
-              label="Category"
+              label="קטגוריה"
               value={formData.category}
               onChange={handleChange}
+              sx={{ 
+                '& .MuiInputBase-input': {
+                  textAlign: 'right'
+                }
+              }}
             >
               {categories.map((category) => (
                 <MenuItem key={category} value={category}>
@@ -149,7 +138,7 @@ const form = ({
 
             <TextField
               name="description"
-              label="Description (optional)"
+              label="פירוט (אופציונלי)"
               value={formData.description}
               onChange={handleChange}
               multiline
@@ -159,7 +148,7 @@ const form = ({
             <TextField
               required
               name="amount"
-              label="Amount"
+              label="סכום"
               type="number"
               value={formData.amount}
               onChange={handleChange}
@@ -171,7 +160,7 @@ const form = ({
             <TextField
               required
               name="date"
-              label="Date"
+              label="תאריך"
               type="date"
               value={formData.date}
               onChange={handleChange}
@@ -185,6 +174,9 @@ const form = ({
               color="primary"
               type="submit"
               size="large"
+              sx={{
+                marginTop: 'rem',
+              }}
             >
               Submit
             </Button>

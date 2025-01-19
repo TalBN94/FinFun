@@ -1,137 +1,71 @@
-import { 
-  Button, 
-  Container, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
-  Paper,
-  CircularProgress,
-  Alert 
-} from "@mui/material";
-import { useState } from "react";
-import Form from './TransactionsComponents/Form'
+  import { 
+    Button, 
+    Container, 
+    CircularProgress,
+    Alert 
+  } from "@mui/material";
+  import { useState, useEffect } from "react";
+  import { useExpenses } from '../hooks/useExpenses';
+  import Form from './TransactionsComponents/Form';
+  import ExpensesByCategory from "./TransactionsComponents/ExpensesByCategory";
+  
 
-const Expense = () => {
-  const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState(null);
-  const [error, setError] = useState("");
+  const Expense = () => {
+    const { expenses, isLoading, error, fetchExpenses, createExpense } = useExpenses();
+    const [open, setOpen] = useState(false);
+    const [data, setData] = useState([]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+    useEffect(() => {
+      fetchExpenses();
+    }, [fetchExpenses]);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-  const handleSubmitSuccess = (data) => {
-    postTransaction(data);
-    getAllTransactions();
-    console.log('Form submitted successfully:', data);
-  };
 
-  const getAllTransactions = async () => {
+const handleSubmitSuccess = async (data) => {
     try {
-      setIsLoading(true);
-      const response = await fetch("http://127.0.0.1:5001/expenses");
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-      }
-      const result = await response.json();
-      setData(result);
-      console.log(data.category);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
+      await createExpense(data);
+      handleClose();
+    } catch (err) {
+      console.error('Failed to create expense:', err);
     }
   };
+ 
 
-  const postTransaction = async (transactionData) => {
-    try {
-      setIsLoading(true);
-      const response = await fetch("http://127.0.0.1:5001/expenses", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: String(Date.now()), // Generate unique ID
-          amount: parseInt(transactionData.amount),
-          description: transactionData.description || "",
-          category: transactionData.category
-        })
-      });
 
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-      }
+    return (
+      <Container sx={{position: 'relative', top: '6rem'}}>
+        
 
-      const result = await response.json();
-      setData(result);
-      handleClose(); // Close the form after successful submission
-    } catch (error) {
-      setError(error.message);
-      console.error('Error posting transaction:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        <Form
+          open={open}
+          handleClose={handleClose}
+          title="על מה הוצאנו?"
+          apiPath="http://127.0.0.1:5001/expenses"
+          onSubmitSuccess={handleSubmitSuccess}
+        />
 
-  return (
-    <Container>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleClickOpen}
-        sx={{ mb: 2 }}
-      >
-        Add New Expense
-      </Button>
-
-      <Form
-        open={open}
-        handleClose={handleClose}
-        title="Add New Expense"
-        apiPath="http://127.0.0.1:5001/expenses"
-        onSubmitSuccess={handleSubmitSuccess}
-      />
-
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-
-      {isLoading ? (
-        <CircularProgress />
-      ) : (
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="expenses table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Category</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell align="right">Amount</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data && data.map((expense) => (
-                <TableRow
-                  key={expense.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell>{expense.category}</TableCell>
-                  <TableCell>{expense.description}</TableCell>
-                  <TableCell align="right">${expense.amount}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+     {error && error !== "" && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
       )}
-    </Container>
-  );
-};
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <ExpensesByCategory expenses={expenses} />
+        )}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleClickOpen}
+          sx={{ mb: 2, mt: 2 }}
+        >
+          הוצאה חדשה
+        </Button>
+      </Container>
+    );
+  };
 
-export default Expense;
+  export default Expense;

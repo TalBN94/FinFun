@@ -11,6 +11,7 @@
   
 
   const Expense = () => {
+    const today = new Date().toISOString().split('T')[0];
     const { expenses, isLoading, error, fetchExpenses, createExpense } = useExpenses();
     const [open, setOpen] = useState(false);
     const [data, setData] = useState([]);

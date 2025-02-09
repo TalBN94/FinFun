@@ -11,28 +11,71 @@
   
 
   const Expense = () => {
+  // Get today's date in YYYY-MM-DD format
     const today = new Date().toISOString().split('T')[0];
-    const { expenses, isLoading, error, fetchExpenses, createExpense } = useExpenses();
-    const [open, setOpen] = useState(false);
-    const [data, setData] = useState([]);
-
-    useEffect(() => {
-      fetchExpenses();
-    }, [fetchExpenses]);
-
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-
-const handleSubmitSuccess = async (data) => {
-    try {
-      await createExpense(data);
-      handleClose();
-    } catch (err) {
-      console.error('Failed to create expense:', err);
-    }
-  };
- 
+    
+    // Initial form state
+    const [formData, setFormData] = useState({
+      category: '',
+      description: '',
+      amount: 0,
+      date: today
+    });
+  
+    // Available expense categories
+    const categories = [
+      'Food & Dining',
+      'Transportation',
+      'Entertainment',
+      'Shopping',
+      'Utilities',
+      'Healthcare',
+      'Education',
+      'Other'
+    ];
+  
+    const handleChange = (event) => {
+      const { name, value } = event.target;
+      setFormData(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
+    };
+  
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      console.log('Form submitted:', formData);
+      fetch("http://127.0.0.1:5001/expenses", {
+        method: "POST",
+        body: JSON.stringify({
+          id: "1", 
+          amount: parseInt(formData.amount), 
+          description: formData.description || "", 
+          category: formData.category,
+          date: formData.date
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      }).then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        setFormData({
+          category: '',
+          description: '',
+          amount: 0,
+          date: today
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    };
 
 
     return (

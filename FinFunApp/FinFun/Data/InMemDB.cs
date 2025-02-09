@@ -43,5 +43,11 @@ public sealed class InMemDb
         _expenses.Remove(id);
     }
 
+    // Used for testing
+    public void Reset()
+    {
+        _expenses.Clear();
+    }
+
     public static InMemDb Instance { get; } = new InMemDb();
 }

@@ -1,15 +1,17 @@
-import { 
-    Container, 
-    TextField, 
-    MenuItem, 
+  import { 
     Button, 
-    Stack, 
-    Typography 
-  } from '@mui/material';
-  import React, { useState } from "react";
+    Container, 
+    CircularProgress,
+    Alert 
+  } from "@mui/material";
+  import { useState, useEffect } from "react";
+  import { useExpenses } from '../hooks/useExpenses';
+  import Form from './TransactionsComponents/Form';
+  import ExpensesByCategory from "./TransactionsComponents/ExpensesByCategory";
   
+
   const Expense = () => {
-    // Get today's date in YYYY-MM-DD format
+  // Get today's date in YYYY-MM-DD format
     const today = new Date().toISOString().split('T')[0];
     
     // Initial form state
@@ -74,75 +76,40 @@ import {
         console.error('Error:', error);
       });
     };
-  
+
+
     return (
-      <Container maxWidth="sm">
-        <form onSubmit={handleSubmit}>
-          <Stack spacing={3} sx={{ py: 4 }}>
-            <Typography variant="h5" component="h1">
-              Add New Expense
-            </Typography>
-  
-            {/* Category Dropdown */}
-            <TextField
-              select
-              required
-              name="category"
-              label="Category"
-              value={formData.category}
-              onChange={handleChange}
-            >
-              {categories.map((category) => (
-                <MenuItem key={category} value={category}>
-                  {category}
-                </MenuItem>
-              ))}
-            </TextField>
-  
-            {/* Description Field */}
-            <TextField
-              name="description"
-              label="Description (optional)"
-              value={formData.description}
-              onChange={handleChange}
-              multiline
-              rows={2}
-            />
-  
-            {/* Amount Field */}
-            <TextField
-              required
-              name="amount"
-              label="Amount"
-              type="number"
-              value={formData.amount}
-              onChange={handleChange}
-          
-            />
-  
-            {/* Date Field */}
-            <TextField
-              required
-              name="date"
-              label="Date"
-              type="date"
-              value={formData.date}
-              onChange={handleChange}
-          
-            />
-  
-            <Button 
-              variant="contained" 
-              color="primary" 
-              type="submit"
-              size="large"
-            >
-              Add Expense
-            </Button>
-          </Stack>
-        </form>
+      <Container sx={{position: 'relative', top: '6rem'}}>
+        
+
+        <Form
+          open={open}
+          handleClose={handleClose}
+          title="על מה הוצאנו?"
+          apiPath="http://127.0.0.1:5001/expenses"
+          onSubmitSuccess={handleSubmitSuccess}
+        />
+
+     {error && error !== "" && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <ExpensesByCategory expenses={expenses} />
+        )}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleClickOpen}
+          sx={{ mb: 2, mt: 2 }}
+        >
+          הוצאה חדשה
+        </Button>
       </Container>
     );
   };
-  
+
   export default Expense;

@@ -11,27 +11,7 @@
   
 
   const Expense = () => {
-    const today = new Date().toISOString().split('T')[0];
-    const { expenses, isLoading, error, fetchExpenses, createExpense } = useExpenses();
-    const [open, setOpen] = useState(false);
-    const [data, setData] = useState([]);
 
-    useEffect(() => {
-      fetchExpenses();
-    }, [fetchExpenses]);
-
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-
-const handleSubmitSuccess = async (data) => {
-    try {
-      await createExpense(data);
-      handleClose();
-    } catch (err) {
-      console.error('Failed to create expense:', err);
-    }
-  };
  
 
 

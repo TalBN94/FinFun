@@ -2,6 +2,7 @@ using FinFunApp.Errors;
 using FinFunApp.Exceptions;
 using FinFunApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,11 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     options.InvalidModelStateResponseFactory = ModelValidationErrorResponse.GenerateResponse;
 });
 
+if (builder.Environment.IsDevelopment())
+{
+    Console.WriteLine("Running on development");
+}
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
@@ -22,6 +28,13 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
+builder.Configuration.AddJsonFile("appsettings.Development.json", false, true);
+string connectionString = builder.Configuration.GetConnectionString("Postgres");
+
+builder.Services.AddDbContext<FinFunDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
 var app = builder.Build();
 app.UseExceptionHandler( _ => { });
 app.UseCors("AllowReactApp");

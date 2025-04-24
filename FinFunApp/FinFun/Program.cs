@@ -29,13 +29,19 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Configuration.AddJsonFile("appsettings.Development.json", false, true);
+builder.Configuration.AddEnvironmentVariables();
 string connectionString = builder.Configuration.GetConnectionString("Postgres");
+Console.WriteLine($"Using DB connection string: {connectionString}");
 
 builder.Services.AddDbContext<FinFunDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+var db = scope.ServiceProvider.GetRequiredService<FinFunDbContext>();
+db.Database.Migrate();
+
 app.UseExceptionHandler( _ => { });
 app.UseCors("AllowReactApp");
 app.UseRouting();

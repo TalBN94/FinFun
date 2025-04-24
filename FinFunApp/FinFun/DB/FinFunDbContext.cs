@@ -3,7 +3,7 @@ using FinFunApp.Model;
 
 public class FinFunDbContext : DbContext
 {
-    public DbSet<Expense> Expenses { get; set; }
+    public virtual DbSet<Expense> Expenses { get; set; }
 
     public FinFunDbContext(DbContextOptions<FinFunDbContext> options)
         : base(options)

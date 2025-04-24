@@ -6,18 +6,17 @@ namespace FinFunApp.Services;
 
 public class ExpensesService(ILogger<ExpensesService> logger, FinFunDbContext context)
 {
-    private readonly FinFunDbContext _context = context;
-
     public List<Expense> GetAll()
     {
         logger.LogInformation("Fetching all expenses");
-        return _context.Expenses.ToList();
+        return context.Expenses.ToList();
     }
 
     public Expense Get(Guid id)
     {
         logger.LogInformation("Fetching expense {}", id);
         var expense = context.Expenses.Find(id);
+        
         return expense;
     }
 
@@ -47,7 +46,7 @@ public class ExpensesService(ILogger<ExpensesService> logger, FinFunDbContext co
             return;
         }
 
-        context.Remove(expense);
+        context.Expenses.Remove(expense);
         context.SaveChanges();
     }
 }

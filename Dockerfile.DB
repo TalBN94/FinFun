@@ -1,0 +1,5 @@
+# Use the official Postgres image from Docker Hub
+FROM postgres:16
+
+# Expose default Postgres port
+EXPOSE 5432

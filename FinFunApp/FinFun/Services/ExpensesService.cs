@@ -1,5 +1,4 @@
 using FinFunApp.Data;
-using FinFunApp.DB;
 using FinFunApp.Model;
 
 namespace FinFunApp.Services;

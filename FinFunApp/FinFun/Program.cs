@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddExceptionHandler<AppExceptionHandler>();
 builder.Services.AddTransient<ExpensesService>();
+builder.Services.AddTransient<IncomesService>();
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = ModelValidationErrorResponse.GenerateResponse;

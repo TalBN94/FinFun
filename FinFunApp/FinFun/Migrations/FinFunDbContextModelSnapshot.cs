@@ -43,6 +43,29 @@ namespace FinFunApp.Migrations
 
                     b.ToTable("expense", (string)null);
                 });
+
+            modelBuilder.Entity("FinFunApp.Model.Income", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double?>("Amount")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly?>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("income", (string)null);
+                });
 #pragma warning restore 612, 618
         }
     }

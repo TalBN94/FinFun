@@ -23,9 +23,17 @@ export const useExpenses = () => {
     try {
       setIsLoading(true);
       setError(null);
-      await transactionsApi.create(expenseData);
-      // Refresh the expenses list after creating new expense
-      await fetchExpenses();
+      // Before API call
+      const newExpenseWithTempId = {...expenseData, id: 'temp-id'};
+      setData(currentData => [...currentData, newExpenseWithTempId]);
+
+      // Make API call
+      const createdExpense = await transactionsApi.create(expenseData);
+
+      // Update with real data
+      setData(currentData => currentData.map(item => 
+        item.id === 'temp-id' ? createdExpense : item
+      ));
     } catch (err) {
       setError(err.message);
       throw err; // Re-throw to handle in the component if needed

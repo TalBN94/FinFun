@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
 
   const handleNavigation = (event, newValue) => {
     setValue(newValue);
-    const paths = ['/', '/profile','/goals', '/expense', '/incomes'];
+    const paths = ['/', '/profile','/goals', '/expense', '/income'];
     navigate(paths[newValue]);
   };
 
